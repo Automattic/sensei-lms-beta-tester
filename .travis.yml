@@ -1,0 +1,76 @@
+sudo: false
+dist: trusty
+language: php
+notifications:
+  email:
+    on_success: never
+    on_failure: never
+branches:
+  only:
+    - master
+cache:
+  directories:
+    - vendor
+    - "$HOME/.composer/cache"
+before_script:
+  - export PLUGIN_BASE_DIR=$(basename $(pwd))
+  - export PLUGIN_SLUG=$(basename $(pwd) | tr '[:upper:]' '[:lower:]')
+  - export PATH="$HOME/.composer/vendor/bin:$HOME/.config/composer/vendor/bin:$PATH"
+  - |
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      phpenv config-rm xdebug.ini
+    else
+      echo "xdebug.ini does not exist"
+    fi
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash tests/bin/prepare-env.sh
+      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+    fi
+jobs:
+  include:
+    # There are no JS blocks to test yet. Uncomment below when we start adding
+    # blocks.
+    #- stage: test
+    #  script:
+    #    - npm install || exit 1
+    #    - npm run test-js || exit 1
+    - stage: test
+      php: 5.6
+      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      php: 7.0
+      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      php: 7.1
+      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      php: 7.2
+      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      php: 7.2
+      env: WP_VERSION=previous WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      php: 7.2
+      env: WP_VERSION=latest WOOCOMMERCE_VERSION=previous SENSEI_VERSION=master
+      script:
+        - ./tests/bin/travis-phpunit.sh
+    - stage: test
+      script:
+        - npm install
+        - npx eslint --config .eslintrc.js ./assets
+    - stage: test
+      php: 7.2
+      script:
+        - composer install
+        - ./tests/bin/travis-phpcs.sh
