@@ -176,17 +176,6 @@ final class Admin {
 				'label_for' => 'channel',
 			]
 		);
-
-		add_settings_field(
-			'sensei-lms-beta-auto-update',
-			__( 'Automatic Updates', 'sensei-lms-beta' ),
-			[ $this, 'automatic_update_checkbox_html' ],
-			'sensei-lms-beta',
-			'sensei-lms-beta-update',
-			[
-				'label_for' => 'auto_update',
-			]
-		);
 	}
 
 	/**
