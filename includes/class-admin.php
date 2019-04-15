@@ -8,8 +8,6 @@
 
 namespace Sensei_LMS_Beta;
 
-use Sensei_LMS_Beta\Updater;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class \Sensei_LMS_Beta\Admin
  */
 final class Admin {
+	const TRANSIENT_SWITCH_VERSION_RESULT = 'sensei-lms-switch-version-result';
+
 	/**
 	 * Instance of class.
 	 *
@@ -66,6 +66,7 @@ final class Admin {
 		}
 
 		add_action( 'admin_init', [ $this, 'init_settings' ] );
+		add_action( 'admin_init', [ $this, 'handle_version_switch' ] );
 		add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );
 		add_action( 'plugin_action_links_' . SENSEI_LMS_BETA_PLUGIN_BASENAME, [ $this, 'add_settings_link' ], 10, 2 );
 		add_action( 'network_admin_plugin_action_links_' . SENSEI_LMS_BETA_PLUGIN_BASENAME, [ $this, 'add_settings_link' ], 10, 2 );
@@ -87,6 +88,69 @@ final class Admin {
 		$settings->auto_update = (bool) $settings->auto_update;
 
 		return $settings;
+	}
+
+	/**
+	 * Handle the version switching.
+	 */
+	public function handle_version_switch() {
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return;
+		}
+		if ( empty( $_POST['sensei_lms_beta_version_select'] ) || empty( $_POST['_wpnonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'switch-sensei-lms-version' ) ) { // WPCS: Input var ok, sanitization ok.
+			wp_die( esc_html__( 'Action failed. Please go back and retry.', 'sensei-lms-beta' ) );
+			return;
+		}
+
+		$new_version = isset( $_POST['sensei_lms_beta_version_select'] ) ? sanitize_text_field( wp_unslash( $_POST['sensei_lms_beta_version_select'] ) ) : false; // WPCS: Input var ok, sanitization ok.
+
+		if ( empty( $new_version ) ) {
+			return;
+		}
+
+		$result        = false;
+		$error_message = false;
+		try {
+			$result = Updater::instance()->switch_version( $new_version );
+		} catch ( \Exception $e ) {
+			$error_message = $e->getMessage();
+		}
+
+		set_site_transient(
+			self::TRANSIENT_SWITCH_VERSION_RESULT,
+			wp_json_encode(
+				[
+					'result'        => $result,
+					'error_message' => $error_message,
+					'new_version'   => $new_version,
+				]
+			),
+			60 * 60
+		);
+
+		wp_safe_redirect( admin_url( 'plugins.php?page=sensei-lms-beta-tester' ) );
+		exit;
+	}
+
+	/**
+	 * Get and destroy any pending switch version results.
+	 *
+	 * @return array|bool
+	 */
+	public function get_destroy_switch_version_result() {
+		$result = get_site_transient( self::TRANSIENT_SWITCH_VERSION_RESULT );
+
+		if ( ! $result ) {
+			return false;
+		}
+
+		delete_site_transient( self::TRANSIENT_SWITCH_VERSION_RESULT );
+
+		return json_decode( $result, true );
 	}
 
 	/**

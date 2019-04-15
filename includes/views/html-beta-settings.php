@@ -14,6 +14,23 @@ if ( isset( $_GET['settings-updated'] ) ) { // phpcs:ignore WordPress.Security.N
 	add_settings_error( 'sensei-lms-beta-messages', 'sensei-lms-beta-message', __( 'Settings Saved', 'sensei-lms-beta' ), 'updated' );
 }
 
+$switch_version_result = \Sensei_LMS_Beta\Admin::instance()->get_destroy_switch_version_result();
+if ( $switch_version_result ) {
+	if ( ! empty( $switch_version_result['result'] ) ) {
+		echo '<div class="notice notice-success"><p>';
+		// translators: placeholder is the version that was just switched to.
+		$message = sprintf( __( '<strong>Sensei LMS</strong> was successfully switched to version <strong>%s</strong>.', 'sensei-lms-beta' ), $switch_version_result['new_version'] );
+		echo wp_kses( $message, [ 'strong' => [] ] );
+		echo '</p></div>';
+	} else {
+		echo '<div class="error"><p>';
+		// translators: %1$s is the version that was being switched to; %2$s is the error message that was passed back.
+		$message = sprintf( __( 'An error occurred while switching <strong>Sensei LMS</strong> to version <strong>%1$s</strong>: %2$s', 'sensei-lms-beta' ), $switch_version_result['new_version'], $switch_version_result['error_message'] );
+		echo wp_kses( $message, [ 'strong' => [] ] );
+		echo '</p></div>';
+	}
+}
+
 // show error/update messages.
 settings_errors( 'sensei-lms-beta-messages' );
 

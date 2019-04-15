@@ -23,7 +23,7 @@ interface Source {
 	/**
 	 * Returns an array of plugin packages.
 	 *
-	 * @return Plugin_Package[]
+	 * @return bool|Plugin_Package[]
 	 */
 	public function get_versions();
 }

@@ -48,7 +48,7 @@ class Github extends Abstract_Source {
 	/**
 	 * Returns an array of plugin packages.
 	 *
-	 * @return Plugin_Package[]
+	 * @return bool|Plugin_Package[]
 	 */
 	public function get_versions() {
 		$releases_raw = self::api_fetch( $this->id_prefix . '_versions', $this->get_release_download_url() );

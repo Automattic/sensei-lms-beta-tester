@@ -8,7 +8,6 @@
 
 namespace Sensei_LMS_Beta\Updater;
 
-use http\Exception;
 use Sensei_LMS_Beta\Admin\Plugin_Package;
 use Sensei_LMS_Beta\Updater\Sources\Source;
 
@@ -116,6 +115,11 @@ abstract class Abstract_Updater {
 	 * @return \Sensei_LMS_Beta\Admin\Plugin_Package[]
 	 */
 	public function get_versions( $filter_callback = null ) {
+		static $source_versions;
+		if ( $source_versions ) {
+			return $source_versions;
+		}
+
 		$source_versions = $this->get_plugin_package_source()->get_versions();
 
 		if ( $filter_callback ) {
@@ -125,6 +129,12 @@ abstract class Abstract_Updater {
 		uasort(
 			$source_versions,
 			function( $release_a, $release_b ) {
+				/**
+				 * Release packages to compare.
+				 *
+				 * @var Plugin_Package $release_a
+				 * @var Plugin_Package $release_b
+				 */
 				return version_compare( $release_a->get_version(), $release_b->get_version(), '<' );
 			}
 		);
@@ -213,7 +223,16 @@ abstract class Abstract_Updater {
 	 * Include required files.
 	 */
 	private function include_dependencies() {
+		if ( ! class_exists( '\Plugin_Upgrader' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		}
+
+		if ( ! class_exists( '\Automatic_Upgrader_Skin' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';
+		}
+
 		include_once __DIR__ . '/class-plugin-package.php';
+		include_once __DIR__ . '/class-plugin-upgrader.php';
 		include_once __DIR__ . '/sources/interface-source.php';
 		include_once __DIR__ . '/sources/class-abstract-source.php';
 		include_once __DIR__ . '/sources/class-github.php';
@@ -307,6 +326,34 @@ abstract class Abstract_Updater {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Switch to a specific version of the plugin.
+	 *
+	 * @param string $new_version New version to switch to.
+	 * @return bool
+	 *
+	 * @throws \Exception When encountering an error.
+	 */
+	public function switch_version( $new_version ) {
+		$versions = $this->get_versions();
+
+		if ( empty( $versions[ $new_version ] ) ) {
+			throw new \Exception( esc_html__( 'No matching version was found.', 'sensei-lms-beta' ) );
+		}
+
+		$skin     = new \Automatic_Upgrader_Skin();
+		$upgrader = new Plugin_Upgrader( $skin );
+		$result   = $upgrader->install_plugin_package( $this, $versions[ $new_version ] );
+
+		activate_plugin( $this->get_installed_basename(), '', is_network_admin(), true );
+
+		if ( is_wp_error( $skin->result ) ) {
+			throw new \Exception( $skin->result->get_error_message() );
+		}
+
+		return $result;
 	}
 
 	/**
