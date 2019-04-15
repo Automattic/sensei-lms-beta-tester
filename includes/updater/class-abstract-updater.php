@@ -57,13 +57,57 @@ abstract class Abstract_Updater {
 	 * @param string $channel Current channel (beta, rc, stable).
 	 */
 	public function init( $channel ) {
+		if ( ! in_array( $channel, [ self::CHANNEL_STABLE, self::CHANNEL_BETA, self::CHANNEL_RC ], true ) ) {
+			$channel = self::CHANNEL_STABLE;
+		}
 		$this->channel = $channel;
 
 		// If a recognized copy of the plugin is not installed, we don't want to load our fancy overrides.
 		if ( ! $this->get_current_version_package() ) {
 			return;
 		}
+
+		if ( self::CHANNEL_STABLE !== $this->get_channel() ) {
+			// If we aren't on the stable channel, override the update checks.
+			add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'api_check' ] );
+			add_filter( 'plugins_api', [ $this, 'plugins_api' ], 10, 3 );
+		}
 	}
+
+	/**
+	 * Gets the source object to fetch the version plugin packages.
+	 *
+	 * @return Source
+	 */
+	abstract public function get_plugin_package_source();
+
+	/**
+	 * Gets the plugin slug.
+	 *
+	 * @return string
+	 */
+	abstract public function get_plugin_slug();
+
+	/**
+	 * Gets the plugin basename as installed.
+	 *
+	 * @return string
+	 */
+	abstract public function get_installed_basename();
+
+	/**
+	 * Gets the current plugin version.
+	 *
+	 * @return string
+	 */
+	abstract public function get_current_version();
+
+	/**
+	 * Get the basic configuration for the plugin.
+	 *
+	 * @return array
+	 */
+	abstract protected function get_plugin_base_config();
 
 	/**
 	 * Get all version plugin packages.
@@ -176,25 +220,94 @@ abstract class Abstract_Updater {
 	}
 
 	/**
-	 * Gets the source object to fetch the version plugin packages.
+	 * Hook into the plugin update check and connect to WPorg.
 	 *
-	 * @return Source
+	 * @since 1.0
+	 * @param object $transient The plugin data transient.
+	 * @return object $transient Updated plugin data transient.
 	 */
-	abstract public function get_plugin_package_source();
+	public function api_check( $transient ) {
+		$new_version_package = $this->get_latest_channel_release();
+
+		if ( ! $new_version_package ) {
+			return $transient;
+		}
+
+		// check the version and decide if it's new.
+		$update = version_compare( $new_version_package->get_version(), $this->get_current_version(), '>' );
+
+		if ( ! $update ) {
+			return $transient;
+		}
+
+		$plugin_basename = $this->get_installed_basename();
+
+		// Populate response data.
+		if ( ! isset( $transient->response[ $plugin_basename ] ) ) {
+			$transient->response[ $plugin_basename ] = (object) $this->get_plugin_base_config();
+		}
+
+		$transient->response[ $plugin_basename ]->new_version = $new_version_package->get_version();
+		$transient->response[ $plugin_basename ]->zip_url     = $new_version_package->get_download_package_url();
+		$transient->response[ $plugin_basename ]->package     = $new_version_package->get_download_package_url();
+		unset( $transient->no_update[ $plugin_basename ] );
+
+		return $transient;
+	}
 
 	/**
-	 * Gets the plugin slug.
+	 * Filters the Plugin Installation API response results.
 	 *
-	 * @return string
+	 * @param false|object|array $response The result object or array. Default false.
+	 * @param string             $action   The type of information being requested from the Plugin Installation API.
+	 * @param object             $args     Plugin API arguments.
+	 * @return object|bool
 	 */
-	abstract public function get_plugin_slug();
+	public function plugins_api( $response, $action, $args ) {
+		if ( 'plugin_information' !== $action ) {
+			return $response;
+		}
 
-	/**
-	 * Gets the current plugin version.
-	 *
-	 * @return string
-	 */
-	abstract public function get_current_version();
+		// Check if this call API is for the right plugin.
+		if ( ! isset( $args->slug ) || $args->slug !== $this->get_plugin_slug() ) {
+			return $response;
+		}
+
+		$new_version_package = $this->get_latest_channel_release();
+
+		if ( ! version_compare( $new_version_package->get_version(), $this->get_current_version(), '>' ) ) {
+			return $response;
+		}
+
+		$response = (object) $this->get_plugin_base_config();
+		$warning  = '';
+
+		if ( $new_version_package->is_beta() ) {
+			$warning = __( '<h1><span>&#9888;</span>This is a beta release<span>&#9888;</span></h1>', 'sensei-lms-beta' );
+		}
+
+		if ( ! $new_version_package->is_stable() ) {
+			$warning = __( '<h1><span>&#9888;</span>This is a pre-release version<span>&#9888;</span></h1>', 'sensei-lms-beta' );
+		}
+
+		// If we are returning a different version than the stable tag on .org, manipulate the returned data.
+		$response->version       = $new_version_package->get_version();
+		$response->download_link = $new_version_package->get_download_package_url();
+
+		if ( ! isset( $response->sections ) ) {
+			$response->sections = [];
+		}
+		$response->sections['changelog'] = sprintf(
+			'<p><a target="_blank" href="%s">' . esc_html__( 'Read the changelog and find out more about the release on GitHub.', 'sensei-lms-beta' ) . '</a></p>',
+			$new_version_package->get_changelog_url()
+		);
+
+		foreach ( $response->sections as $key => $section ) {
+			$response->sections[ $key ] = wp_kses_post( $warning . $section );
+		}
+
+		return $response;
+	}
 
 	/**
 	 * Gets the plugin package for the current version.
@@ -236,5 +349,4 @@ abstract class Abstract_Updater {
 		}
 		return self::$instance;
 	}
-
 }

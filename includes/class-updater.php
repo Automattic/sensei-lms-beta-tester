@@ -41,6 +41,19 @@ final class Updater extends Abstract_Updater {
 	}
 
 	/**
+	 * Gets the plugin basename as installed.
+	 *
+	 * @return string
+	 */
+	public function get_installed_basename() {
+		if ( function_exists( 'Sensei' ) && ! empty( Sensei()->plugin_path ) ) {
+			return plugin_basename( Sensei()->plugin_path . '/woothemes-sensei.php' );
+		}
+
+		return false;
+	}
+
+	/**
 	 * Gets the current plugin version.
 	 *
 	 * @return string
@@ -51,5 +64,24 @@ final class Updater extends Abstract_Updater {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the basic configuration for the plugin.
+	 *
+	 * @return array
+	 */
+	protected function get_plugin_base_config() {
+		return [
+			'name'        => 'Sensei LMS',
+			'plugin_name' => 'Sensei LMS',
+			'author'      => 'Automattic',
+			'homepage'    => 'https://senseilms.com',
+			'plugin_file' => $this->get_installed_basename(),
+			'slug'        => $this->get_plugin_slug(),
+			'sections'    => [
+				'description' => esc_html__( 'Share your knowledge, grow your network, and strengthen your brand by launching an online course.', 'sensei-lms-beta' ),
+			],
+		];
 	}
 }

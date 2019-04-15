@@ -83,7 +83,7 @@ $current_version = \Sensei_LMS_Beta\Updater::instance()->get_current_version_pac
 		<div class="inside" style="margin-bottom:0;">
 			<h2><?php esc_html_e( 'Switch Sensei Version', 'sensei-lms-beta' ); ?></h2>
 			<?php
-			$confirm_message = esc_html__( 'Are you sure you want to switch your Sensei version? We do not recommend doing this on production sites. Back up first.', 'sensei-lms-beta' );
+			$confirm_message = esc_html__( 'Are you sure you want to switch your Sensei LMS version? We do not recommend doing this on production sites. Back up first.', 'sensei-lms-beta' );
 			?>
 			<form action="plugins.php?page=sensei-lms-beta-tester" method="post" onsubmit="return confirm( '<?php echo esc_attr( $confirm_message ); ?>' );">
 				<p><?php esc_html_e( 'Use this to manually switch to a particular version of Sensei LMS.', 'sensei-lms-beta' ); ?></p>
