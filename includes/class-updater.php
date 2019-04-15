@@ -1,14 +1,16 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Updater_Base.
+ * File containing the class \Sensei_LMS_Beta\Updater.
  *
  * @package sensei-lms-beta
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater;
+namespace Sensei_LMS_Beta;
 
+use Sensei_LMS_Beta\Updater\Abstract_Updater;
 use Sensei_LMS_Beta\Updater\Sources\Github;
+use Sensei_LMS_Beta\Updater\Sources\Source;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing the update logic specific to this plugin.
  *
- * @class \Sensei_LMS_Beta\Updater\Updater
+ * @class \Sensei_LMS_Beta\Updater
  */
 final class Updater extends Abstract_Updater {
 	/**

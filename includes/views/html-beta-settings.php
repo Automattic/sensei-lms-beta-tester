@@ -17,7 +17,7 @@ if ( isset( $_GET['settings-updated'] ) ) { // phpcs:ignore WordPress.Security.N
 // show error/update messages.
 settings_errors( 'sensei-lms-beta-messages' );
 
-$current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version_package();
+$current_version = \Sensei_LMS_Beta\Updater::instance()->get_current_version_package();
 ?>
 <div class="wrap">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -90,7 +90,7 @@ $current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version
 				<label>
 					<select id="sensei-lms-beta-version-select" name="sensei_lms_beta_version_select">
 						<?php
-						foreach ( \Sensei_LMS_Beta\Updater\Updater::instance()->get_versions() as $package ) {
+						foreach ( \Sensei_LMS_Beta\Updater::instance()->get_versions() as $package ) {
 							echo sprintf( '<option name="%1$s">%1$s</option>', esc_html( $package->get_version() ) );
 						}
 						?>

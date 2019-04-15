@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Updater_Base.
+ * File containing the class \Sensei_LMS_Beta\Updater_Base.
  *
  * @package sensei-lms-beta
  * @since   1.0.0
@@ -8,7 +8,7 @@
 
 namespace Sensei_LMS_Beta\Updater;
 
-use BjornJohansen\WPPreCommitHook\Plugin;
+use http\Exception;
 use Sensei_LMS_Beta\Admin\Plugin_Package;
 use Sensei_LMS_Beta\Updater\Sources\Source;
 
@@ -19,15 +19,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing the shared update logic.
  *
- * @class \Sensei_LMS_Beta\Updater\Updater_Base
+ * @class \Sensei_LMS_Beta\Updater_Base
  */
 abstract class Abstract_Updater {
+	const CHANNEL_BETA   = 'beta';
+	const CHANNEL_RC     = 'rc';
+	const CHANNEL_STABLE = 'stable';
+
 	/**
 	 * Instance of class.
 	 *
 	 * @var self
 	 */
 	private static $instance;
+
+	/**
+	 * Current channel that we're currently set to follow.
+	 *
+	 * @var string
+	 */
+	private $channel;
 
 	/**
 	 * Initialize the singleton instance.
@@ -42,8 +53,16 @@ abstract class Abstract_Updater {
 	 * Adds all filters and actions.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $channel Current channel (beta, rc, stable).
 	 */
-	public function init() {
+	public function init( $channel ) {
+		$this->channel = $channel;
+
+		// If a recognized copy of the plugin is not installed, we don't want to load our fancy overrides.
+		if ( ! $this->get_current_version_package() ) {
+			return;
+		}
 	}
 
 	/**
@@ -70,42 +89,29 @@ abstract class Abstract_Updater {
 	}
 
 	/**
-	 * Gets the latest beta channel release plugin package.
+	 * Get the latest channel release for a particular channel.
 	 *
-	 * @return bool|Plugin_Package
+	 * @param string|null $channel Channel to get latest release for. Null for the current channel.
+	 * @return bool|mixed|Plugin_Package
 	 */
-	public function get_latest_beta_channel_release() {
-		$releases = $this->get_beta_channel();
-
-		if ( empty( $releases ) ) {
-			return false;
+	public function get_latest_channel_release( $channel = null ) {
+		if ( null === $channel ) {
+			$channel = $this->channel;
 		}
 
-		return array_shift( $releases );
-	}
-
-	/**
-	 * Gets the latest RC channel release plugin package.
-	 *
-	 * @return bool|Plugin_Package
-	 */
-	public function get_latest_rc_channel_release() {
-		$releases = $this->get_rc_channel();
-
-		if ( empty( $releases ) ) {
-			return false;
+		switch ( $channel ) {
+			case 'beta':
+				$releases = $this->get_beta_channel();
+				break;
+			case 'rc':
+				$releases = $this->get_rc_channel();
+				break;
+			case 'stable':
+				$releases = $this->get_stable_channel();
+				break;
+			default:
+				return false;
 		}
-
-		return array_shift( $releases );
-	}
-
-	/**
-	 * Gets the latest stable channel release plugin package.
-	 *
-	 * @return bool|Plugin_Package
-	 */
-	public function get_latest_stable_channel_release() {
-		$releases = $this->get_stable_channel();
 
 		if ( empty( $releases ) ) {
 			return false;
@@ -195,7 +201,7 @@ abstract class Abstract_Updater {
 	 *
 	 * @return bool|Plugin_Package
 	 */
-	public function current_version_package() {
+	public function get_current_version_package() {
 		$current_version = $this->get_current_version();
 		if ( ! $current_version ) {
 			return false;
@@ -208,6 +214,15 @@ abstract class Abstract_Updater {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the current channel.
+	 *
+	 * @return string
+	 */
+	public function get_channel() {
+		return $this->channel;
 	}
 
 	/**

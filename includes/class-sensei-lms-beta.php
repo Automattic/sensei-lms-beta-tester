@@ -64,6 +64,9 @@ final class Sensei_LMS_Beta {
 		add_action( 'init', [ $instance, 'load_plugin_textdomain' ] );
 
 		Admin::instance()->init();
+
+		$channel = Admin::get_settings()->channel;
+		Updater::instance()->init( $channel );
 	}
 
 	/**

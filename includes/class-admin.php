@@ -8,7 +8,7 @@
 
 namespace Sensei_LMS_Beta;
 
-use Sensei_LMS_Beta\Updater\Updater;
+use Sensei_LMS_Beta\Updater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -41,7 +41,8 @@ final class Admin {
 	 * @since 1.0.0
 	 */
 	public function init() {
-		$current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version_package();
+		$current_version = \Sensei_LMS_Beta\Updater::instance()->get_current_version_package();
+
 		if ( false === $current_version ) {
 			add_action(
 				'plugin_row_meta',
@@ -49,6 +50,7 @@ final class Admin {
 					if ( SENSEI_LMS_BETA_PLUGIN_BASENAME !== $plugin_file ) {
 						return $plugin_meta;
 					}
+
 					$message       = '<span style="color: red; font-weight: bold;">';
 					$message      .= esc_html__( 'Requires Sensei LMS to be installed and activated.', 'sensei-lms-beta' );
 					$message      .= '</span>';
@@ -142,20 +144,20 @@ final class Admin {
 	public function version_select_html( $args ) {
 		$settings = self::get_settings();
 		$channels = [
-			'beta'   => [
+			Updater::CHANNEL_BETA   => [
 				'name'        => __( 'Beta Releases', 'sensei-lms-beta' ),
 				'description' => __( 'Beta releases contain experimental functionality for testing purposes only. This channel will also include RC and stable releases if more current.', 'sensei-lms-beta' ),
-				'latest'      => Updater::instance()->get_latest_beta_channel_release(),
+				'latest'      => Updater::instance()->get_latest_channel_release( Updater::CHANNEL_BETA ),
 			],
-			'rc'     => [
+			Updater::CHANNEL_RC     => [
 				'name'        => __( 'Release Candidates', 'sensei-lms-beta' ),
 				'description' => __( 'Release candidates are released to ensure any critical problems have not gone undetected. This channel will also include stable releases if more current.', 'sensei-lms-beta' ),
-				'latest'      => Updater::instance()->get_latest_rc_channel_release(),
+				'latest'      => Updater::instance()->get_latest_channel_release( Updater::CHANNEL_RC ),
 			],
-			'stable' => [
+			Updater::CHANNEL_STABLE => [
 				'name'        => __( 'Stable Releases', 'sensei-lms-beta' ),
 				'description' => __( 'This is the default behavior in WordPress.', 'sensei-lms-beta' ),
-				'latest'      => Updater::instance()->get_latest_stable_channel_release(),
+				'latest'      => Updater::instance()->get_latest_channel_release( Updater::CHANNEL_STABLE ),
 			],
 		];
 		echo '<fieldset><legend class="screen-reader-text"><span>' . esc_html__( 'Update Channel', 'sensei-lms-beta' ) . '</span></legend>';
