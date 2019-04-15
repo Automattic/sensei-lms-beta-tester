@@ -1,12 +1,12 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Admin\Settings.
+ * File containing the class \Sensei_LMS_Beta\Admin.
  *
  * @package sensei-lms-beta
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Admin;
+namespace Sensei_LMS_Beta;
 
 use Sensei_LMS_Beta\Updater\Updater;
 
@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing settings for the plugin.
  *
- * @class \Sensei_LMS_Beta\Admin\Settings
+ * @class \Sensei_LMS_Beta\Admin
  */
-final class Settings {
+final class Admin {
 	/**
 	 * Instance of class.
 	 *
@@ -41,8 +41,32 @@ final class Settings {
 	 * @since 1.0.0
 	 */
 	public function init() {
+		$current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version_package();
+		if ( false === $current_version ) {
+			add_action(
+				'plugin_row_meta',
+				function( $plugin_meta, $plugin_file ) {
+					if ( SENSEI_LMS_BETA_PLUGIN_BASENAME !== $plugin_file ) {
+						return $plugin_meta;
+					}
+					$message       = '<span style="color: red; font-weight: bold;">';
+					$message      .= esc_html__( 'Requires Sensei LMS to be installed and activated.', 'sensei-lms-beta' );
+					$message      .= '</span>';
+					$plugin_meta[] = $message;
+
+					return $plugin_meta;
+				},
+				10,
+				2
+			);
+
+			return;
+		}
+
 		add_action( 'admin_init', [ $this, 'init_settings' ] );
 		add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );
+		add_action( 'plugin_action_links_' . SENSEI_LMS_BETA_PLUGIN_BASENAME, [ $this, 'add_settings_link' ], 10, 2 );
+		add_action( 'network_admin_plugin_action_links_' . SENSEI_LMS_BETA_PLUGIN_BASENAME, [ $this, 'add_settings_link' ], 10, 2 );
 	}
 
 	/**
@@ -181,6 +205,29 @@ final class Settings {
 	 */
 	public function add_admin_menu() {
 		add_plugins_page( esc_html__( 'Sensei Beta Tester', 'sensei-lms-beta' ), esc_html__( 'Sensei Beta Tester', 'sensei-lms-beta' ), 'install_plugins', 'sensei-lms-beta-tester', [ $this, 'output_settings_page' ] );
+	}
+
+	/**
+	 * Add link to settings page for this plugin.
+	 *
+	 * @param array  $actions     Actions to show in plugin list.
+	 * @param string $plugin_file Plugin file currently being listed.
+	 *
+	 * @return mixed
+	 */
+	public function add_settings_link( $actions, $plugin_file ) {
+		if ( SENSEI_LMS_BETA_PLUGIN_BASENAME !== $plugin_file ) {
+			return $actions;
+		}
+
+		$new_actions             = [];
+		$new_actions['settings'] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( admin_url( 'plugins.php?page=sensei-lms-beta-tester' ) ),
+			esc_html__( 'Settings', 'sensei-lms-beta' )
+		);
+
+		return array_merge( $new_actions, $actions );
 	}
 
 	/**

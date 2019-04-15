@@ -89,6 +89,11 @@ class Github extends Abstract_Source {
 				$packages[ $version ] = $package;
 			}
 		}
+
+		// @todo Remove these versions that we're temporarily ignoring.
+		unset( $packages['1.12.2'] );
+		unset( $packages['1.12.3'] );
+
 		return $packages;
 	}
 
@@ -109,11 +114,6 @@ class Github extends Abstract_Source {
 			}
 
 			if ( 0 === strpos( $asset['name'], $this->id_prefix ) ) {
-				return $asset['browser_download_url'];
-			}
-
-			// @todo remove this
-			if ( 0 === strpos( $asset['name'], 'woothemes-sensei' ) || 0 === strpos( $asset['name'], 'sensei' ) ) {
 				return $asset['browser_download_url'];
 			}
 		}

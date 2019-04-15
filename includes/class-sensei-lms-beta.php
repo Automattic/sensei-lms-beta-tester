@@ -63,14 +63,14 @@ final class Sensei_LMS_Beta {
 
 		add_action( 'init', [ $instance, 'load_plugin_textdomain' ] );
 
-		Admin\Settings::instance()->init();
+		Admin::instance()->init();
 	}
 
 	/**
 	 * Include required files.
 	 */
 	private function include_dependencies() {
-		include_once $this->plugin_dir . '/includes/admin/class-settings.php';
+		include_once $this->plugin_dir . '/includes/class-admin.php';
 		include_once $this->plugin_dir . '/includes/updater/class-abstract-updater.php';
 		include_once $this->plugin_dir . '/includes/class-updater.php';
 	}

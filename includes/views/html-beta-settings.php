@@ -17,14 +17,11 @@ if ( isset( $_GET['settings-updated'] ) ) { // phpcs:ignore WordPress.Security.N
 // show error/update messages.
 settings_errors( 'sensei-lms-beta-messages' );
 
+$current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version_package();
 ?>
 <div class="wrap">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-	<?php
-	$current_version = \Sensei_LMS_Beta\Updater\Updater::instance()->current_version_package();
-	if ( $current_version ) :
-		?>
 	<div class="notice notice-info">
 		<p>
 			<?php
@@ -67,9 +64,7 @@ settings_errors( 'sensei-lms-beta-messages' );
 
 		</p>
 	</div>
-		<?php
-	endif;
-	?>
+
 	<div class="postbox">
 		<div class="inside" style="margin-bottom:0;">
 			<form action="options.php" method="post">

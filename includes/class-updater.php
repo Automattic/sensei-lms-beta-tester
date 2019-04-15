@@ -35,7 +35,7 @@ final class Updater extends Abstract_Updater {
 	 * @return string
 	 */
 	public function get_plugin_slug() {
-		return 'sensei-lms';
+		return 'woothemes-sensei';
 	}
 
 	/**
