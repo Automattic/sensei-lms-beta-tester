@@ -49,23 +49,6 @@ gulp.task( 'clean', gulp.series( function( cb ) {
 	], cb );
 } ) );
 
-gulp.task( 'CSS', gulp.series( function() {
-	return gulp.src( paths.css )
-		.pipe( sass().on( 'error', sass.logError ) )
-		.pipe( minifyCSS( { keepBreaks: false } ) )
-		.pipe( gulp.dest( 'assets/css' ) );
-} ) );
-
-gulp.task( 'JS', gulp.series( function() {
-	return gulp.src( paths.scripts )
-		.pipe( babel() )
-		// This will minify and rename to *.min.js
-		.pipe( uglify() )
-		.pipe( rename( { extname: '.min.js' } ) )
-		.pipe( chmod( 0o644 ) )
-		.pipe( gulp.dest( 'assets/js' ) );
-} ) );
-
 gulp.task( 'pot', gulp.series( function() {
 	return gulp.src( paths.phpFiles )
 		.pipe( sort() )
@@ -103,8 +86,8 @@ gulp.task( 'test', function() {
 		.pipe( phpunit() );
 } );
 
-gulp.task( 'build', gulp.series( 'test', 'clean', 'CSS', 'JS' ) );
-gulp.task( 'build-unsafe', gulp.series( 'clean', 'CSS', 'JS' ) );
+gulp.task( 'build', gulp.series( 'test', 'clean' ) );
+gulp.task( 'build-unsafe', gulp.series( 'clean' ) );
 
 gulp.task( 'copy-package', function() {
 	return gulp.src( paths.packageContents, { base: '.' } )
