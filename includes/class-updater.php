@@ -37,7 +37,7 @@ final class Updater extends Abstract_Updater {
 	 * @return string
 	 */
 	public function get_plugin_slug() {
-		return 'sensei-lms';
+		return 'woothemes-sensei';
 	}
 
 	/**
@@ -47,7 +47,7 @@ final class Updater extends Abstract_Updater {
 	 */
 	public function get_installed_basename() {
 		if ( function_exists( 'Sensei' ) && ! empty( Sensei()->plugin_path ) ) {
-			return plugin_basename( Sensei()->plugin_path . '/sensei-lms.php' );
+			return plugin_basename( Sensei()->plugin_path . '/woothemes-sensei.php' );
 		}
 
 		return false;
