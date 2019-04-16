@@ -109,6 +109,21 @@ abstract class Abstract_Updater {
 	abstract protected function get_plugin_base_config();
 
 	/**
+	 * Gets the message displayed above plugin messages when on beta or RC channel.
+	 *
+	 * @return string
+	 */
+	abstract public function get_message_not_stable_notice();
+
+	/**
+	 * Gets the changelog displayed on the plugin information.
+	 *
+	 * @param Plugin_Package $plugin_package Plugin package to get changelog for.
+	 * @return string
+	 */
+	abstract public function get_changelog( $plugin_package );
+
+	/**
 	 * Get all version plugin packages.
 	 *
 	 * @param callable $filter_callback Callback to filter the versions returned.
@@ -301,12 +316,8 @@ abstract class Abstract_Updater {
 		$response = (object) $this->get_plugin_base_config();
 		$warning  = '';
 
-		if ( $new_version_package->is_beta() ) {
-			$warning = __( '<h1><span>&#9888;</span>This is a beta release<span>&#9888;</span></h1>', 'sensei-lms-beta' );
-		}
-
 		if ( ! $new_version_package->is_stable() ) {
-			$warning = __( '<h1><span>&#9888;</span>This is a pre-release version<span>&#9888;</span></h1>', 'sensei-lms-beta' );
+			$warning = $this->get_message_not_stable_notice();
 		}
 
 		// If we are returning a different version than the stable tag on .org, manipulate the returned data.
@@ -316,10 +327,7 @@ abstract class Abstract_Updater {
 		if ( ! isset( $response->sections ) ) {
 			$response->sections = [];
 		}
-		$response->sections['changelog'] = sprintf(
-			'<p><a target="_blank" href="%s">' . esc_html__( 'Read the changelog and find out more about the release on GitHub.', 'sensei-lms-beta' ) . '</a></p>',
-			$new_version_package->get_changelog_url()
-		);
+		$response->sections['changelog'] = $this->get_changelog( $new_version_package );
 
 		foreach ( $response->sections as $key => $section ) {
 			$response->sections[ $key ] = wp_kses_post( $warning . $section );
@@ -340,7 +348,7 @@ abstract class Abstract_Updater {
 		$versions = $this->get_versions();
 
 		if ( empty( $versions[ $new_version ] ) ) {
-			throw new \Exception( esc_html__( 'No matching version was found.', 'sensei-lms-beta' ) );
+			return false;
 		}
 
 		$skin     = new \Automatic_Upgrader_Skin();

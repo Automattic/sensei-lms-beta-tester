@@ -8,6 +8,7 @@
 
 namespace Sensei_LMS_Beta;
 
+use Sensei_LMS_Beta\Admin\Plugin_Package;
 use Sensei_LMS_Beta\Updater\Abstract_Updater;
 use Sensei_LMS_Beta\Updater\Sources\Github;
 use Sensei_LMS_Beta\Updater\Sources\Source;
@@ -64,6 +65,28 @@ final class Updater extends Abstract_Updater {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Gets the message displayed above plugin messages when on beta or RC channel.
+	 *
+	 * @return string
+	 */
+	public function get_message_not_stable_notice() {
+		return __( '<h1><span>&#9888;</span>This is a pre-release version and should only be used on non-production sites<span>&#9888;</span></h1>', 'sensei-lms-beta' );
+	}
+
+	/**
+	 * Gets the changelog displayed on the plugin information.
+	 *
+	 * @param Plugin_Package $plugin_package Plugin package to get changelog for.
+	 * @return string
+	 */
+	public function get_changelog( $plugin_package ) {
+		return sprintf(
+			'<p><a target="_blank" href="%s">' . esc_html__( 'Read the changelog and find out more about the release on GitHub.', 'sensei-lms-beta' ) . '</a></p>',
+			$plugin_package->get_changelog_url()
+		);
 	}
 
 	/**

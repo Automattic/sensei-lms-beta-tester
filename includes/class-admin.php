@@ -120,6 +120,11 @@ final class Admin {
 			$error_message = $e->getMessage();
 		}
 
+		if ( empty( $error_message ) && false === $result ) {
+			// translators: Placeholder is the version the user is trying to switch to.
+			$result = sprintf( esc_html__( 'An error occurred while attempting to switch the version to %s', 'sensei-lms-beta' ), $new_version );
+		}
+
 		set_site_transient(
 			self::TRANSIENT_SWITCH_VERSION_RESULT,
 			wp_json_encode(
