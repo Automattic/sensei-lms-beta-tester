@@ -10,13 +10,12 @@
 
 	<!-- What to scan -->
 	<file>.</file>
-	<!-- Ignoring Files and Folders:
-		https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern type="relative">build/</exclude-pattern>
 	<exclude-pattern>./node_modules/</exclude-pattern>
 	<exclude-pattern>./vendor/</exclude-pattern>
 	<exclude-pattern>./tests/bootstrap.php</exclude-pattern>
 	<exclude-pattern>./tests/bin/</exclude-pattern>
+	<exclude-pattern>./tests/framework/</exclude-pattern>
 
 	<!-- How to scan -->
 	<arg value="sp"/> <!-- Show sniff and progress -->
@@ -39,7 +38,13 @@
 
 	<!-- Rules: Check PHP version compatibility - see
 		https://github.com/PHPCompatibility/PHPCompatibilityWP -->
-	<rule ref="PHPCompatibilityWP"/>
+	<rule ref="PHPCompatibilityWP">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
 
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax">
 		<exclude-pattern>includes/class-sensei-lms-beta-dependency-checker.php</exclude-pattern>
