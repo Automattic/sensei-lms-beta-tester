@@ -8,8 +8,6 @@
 
 namespace Sensei_LMS_Beta\Updater;
 
-use Sensei_LMS_Beta\Updater\Plugin_Package;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
