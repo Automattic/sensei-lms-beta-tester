@@ -98,7 +98,7 @@ $current_version = \Sensei_LMS_Beta_Tester\Updater::instance()->get_current_vers
 
 	<div class="postbox">
 		<div class="inside" style="margin-bottom:0;">
-			<h2><?php esc_html_e( 'Switch Sensei Version', 'sensei-lms-beta-tester' ); ?></h2>
+			<h2><?php esc_html_e( 'Switch Version', 'sensei-lms-beta-tester' ); ?></h2>
 			<?php
 			$confirm_message = esc_html__( 'Are you sure you want to switch your Sensei LMS version? We do not recommend doing this on production sites. Back up first.', 'sensei-lms-beta-tester' );
 			?>
