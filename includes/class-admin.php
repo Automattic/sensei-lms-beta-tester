@@ -246,21 +246,6 @@ final class Admin {
 	}
 
 	/**
-	 * Auto updates checkbox markup output.
-	 *
-	 * @param array $args Arguments.
-	 */
-	public function automatic_update_checkbox_html( $args ) {
-		$settings = self::get_settings();
-		?>
-		<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-			<input type="checkbox" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="sensei_lms_beta_options[<?php echo esc_attr( $args['label_for'] ); ?>]" value="1" <?php checked( $settings->{ $args['label_for'] }, true ); ?> />
-			<?php echo esc_html__( 'If enabled, Sensei will update to the latest release in the background. Use with caution; we do not recommend using this on production sites!', 'sensei-lms-beta' ); ?>
-		</label>
-		<?php
-	}
-
-	/**
 	 * Adds the admin menu item under Plugins.
 	 */
 	public function add_admin_menu() {
