@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class Sensei_LMS_Beta
  */
 final class Sensei_LMS_Beta {
-	const SENSEI_LMS_BETA_REPORT_ISSUE_URL = 'https://github.com/Automattic/sensei/issue/new';
+	const SENSEI_LMS_BETA_REPORT_ISSUE_URL = 'https://github.com/Automattic/sensei/issues/new';
 
 	/**
 	 * Instance of class.
