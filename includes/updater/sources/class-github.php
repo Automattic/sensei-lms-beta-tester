@@ -90,10 +90,6 @@ class Github extends Abstract_Source {
 			}
 		}
 
-		// @todo Remove these versions that we're temporarily ignoring.
-		unset( $packages['1.12.2'] );
-		unset( $packages['1.12.3'] );
-
 		return $packages;
 	}
 
