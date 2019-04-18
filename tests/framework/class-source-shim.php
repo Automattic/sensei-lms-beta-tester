@@ -1,15 +1,15 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Tests\Framework.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater\Tests\Framework.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Tests\Framework;
+namespace Sensei_LMS_Beta_Tester\Tests\Framework;
 
-use Sensei_LMS_Beta\Updater\Plugin_Package;
-use Sensei_LMS_Beta\Updater\Sources\Abstract_Source;
+use Sensei_LMS_Beta_Tester\Updater\Plugin_Package;
+use Sensei_LMS_Beta_Tester\Updater\Sources\Abstract_Source;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Package containing class to retrieve plugin version packages from GitHub.
  *
- * @class \Sensei_LMS_Beta\Updater\Tests\Framework
+ * @class \Sensei_LMS_Beta_Tester\Updater\Tests\Framework
  */
 class Source_Shim extends Abstract_Source {
 	/**

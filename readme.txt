@@ -38,7 +38,7 @@ Updates are downloaded from the GitHub repository where we push betas and releas
 
 = Where can I report bugs or contribute to Sensei LMS Beta Tester? =
 
-Bugs can be reported to the [Sensei LMS Beta Tester GitHub issue tracker](https://github.com/Automattic/sensei-lms-beta).
+Bugs can be reported to the [Sensei LMS Beta Tester GitHub issue tracker](https://github.com/Automattic/sensei-lms-beta-tester).
 
 = Where can I report bugs or contribute to Sensei LMS? =
 

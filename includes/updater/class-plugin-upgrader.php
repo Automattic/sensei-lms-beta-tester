@@ -1,12 +1,12 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater_Base.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater_Base.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater;
+namespace Sensei_LMS_Beta_Tester\Updater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

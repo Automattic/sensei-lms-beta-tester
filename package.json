@@ -1,5 +1,5 @@
 {
-  "name": "sensei-lms-beta",
+  "name": "sensei-lms-beta-tester",
   "version": "1.0.0",
   "description": "Sensei LMS Beta Tester",
   "main": "gulpfile.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Automattic/sensei-lms-beta.git"
+    "url": "git+https://github.com/Automattic/sensei-lms-beta-tester.git"
   },
   "keywords": [
     "wordpress-plugin"
@@ -20,9 +20,9 @@
   "author": "Automattic",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/Automattic/sensei-lms-beta/issues"
+    "url": "https://github.com/Automattic/sensei-lms-beta-tester/issues"
   },
-  "homepage": "https://github.com/Automattic/sensei-lms-beta#readme",
+  "homepage": "https://github.com/Automattic/sensei-lms-beta-tester#readme",
   "devDependencies": {
     "@babel/core": "7.4.3",
     "@wordpress/babel-preset-default": "3.0.2",

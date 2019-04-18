@@ -47,13 +47,13 @@
 	</rule>
 
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax">
-		<exclude-pattern>includes/class-sensei-lms-beta-dependency-checker.php</exclude-pattern>
-		<exclude-pattern>/sensei-lms-beta.php</exclude-pattern>
+		<exclude-pattern>includes/class-sensei-lms-beta-tester-dependency-checker.php</exclude-pattern>
+		<exclude-pattern>/sensei-lms-beta-tester.php</exclude-pattern>
 	</rule>
 
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
-		<include-pattern>includes/class-sensei-lms-beta-dependency-checker.php</include-pattern>
-		<include-pattern>/sensei-lms-beta.php</include-pattern>
+		<include-pattern>includes/class-sensei-lms-beta-tester-dependency-checker.php</include-pattern>
+		<include-pattern>/sensei-lms-beta-tester.php</include-pattern>
 	</rule>
 
 	<!-- For help in understanding this testVersion:
@@ -79,7 +79,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="sensei-lms-beta"/>
+				<element value="sensei-lms-beta-tester"/>
 			</property>
 		</properties>
 	</rule>

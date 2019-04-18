@@ -1,14 +1,14 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Abstract_Updater.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater;
+namespace Sensei_LMS_Beta_Tester\Updater;
 
-use Sensei_LMS_Beta\Updater\Sources\Source;
+use Sensei_LMS_Beta_Tester\Updater\Sources\Source;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing the shared update logic.
  *
- * @class \Sensei_LMS_Beta\Updater\Abstract_Updater
+ * @class \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater
  */
 abstract class Abstract_Updater {
 	const CHANNEL_BETA   = 'beta';
@@ -134,7 +134,7 @@ abstract class Abstract_Updater {
 	 * Get all version plugin packages.
 	 *
 	 * @param callable $filter_callback Callback to filter the versions returned.
-	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta_Tester\Updater\Plugin_Package[]
 	 */
 	protected function get_versions( $filter_callback = null ) {
 		$source_versions = $this->get_plugin_package_source()->get_versions();
@@ -211,7 +211,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for betas, RCs, and stable.
 	 *
-	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta_Tester\Updater\Plugin_Package[]
 	 */
 	public function get_beta_channel() {
 		$generator = function() {
@@ -224,7 +224,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for RCs and stable.
 	 *
-	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta_Tester\Updater\Plugin_Package[]
 	 */
 	public function get_rc_channel() {
 		$generator = function() {
@@ -246,7 +246,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for stable only.
 	 *
-	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta_Tester\Updater\Plugin_Package[]
 	 */
 	public function get_stable_channel() {
 		$generator = function() {

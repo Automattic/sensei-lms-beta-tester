@@ -1,12 +1,12 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Plugin_Package.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater\Plugin_Package.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater;
+namespace Sensei_LMS_Beta_Tester\Updater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Package
  *
- * @class \Sensei_LMS_Beta\Updater\Plugin_Package
+ * @class \Sensei_LMS_Beta_Tester\Updater\Plugin_Package
  */
 class Plugin_Package {
 	/**

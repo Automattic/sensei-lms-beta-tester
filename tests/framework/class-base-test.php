@@ -1,19 +1,19 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Tests\Framework\Base_Test.
+ * File containing the class \Sensei_LMS_Beta_Tester\Tests\Framework\Base_Test.
  *
- * @package sensei-lms-beta/Tests
+ * @package sensei-lms-beta-tester/Tests
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Tests\Framework;
+namespace Sensei_LMS_Beta_Tester\Tests\Framework;
 
-use Sensei_LMS_Beta\Updater;
+use Sensei_LMS_Beta_Tester\Updater;
 
 /**
  * Class containing base test.
  *
- * @class \Sensei_LMS_Beta\Tests\Framework\Base_Test
+ * @class \Sensei_LMS_Beta_Tester\Tests\Framework\Base_Test
  */
 class Base_Test extends \WP_Mock\Tools\TestCase {
 	public function setUp() : void {

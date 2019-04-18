@@ -1,12 +1,12 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater\Sources\Abstract_Source.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater\Sources\Abstract_Source.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater\Sources;
+namespace Sensei_LMS_Beta_Tester\Updater\Sources;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Package containing base class to retrieve plugin version packages.
  *
- * @class \Sensei_LMS_Beta\Updater\Sources\Abstract_Source
+ * @class \Sensei_LMS_Beta_Tester\Updater\Sources\Abstract_Source
  */
 abstract class Abstract_Source implements Source {
 	/**

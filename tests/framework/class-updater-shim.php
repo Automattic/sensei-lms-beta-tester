@@ -1,21 +1,21 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Tests\Framework\Updater_Shim.
+ * File containing the class \Sensei_LMS_Beta_Tester\Tests\Framework\Updater_Shim.
  *
- * @package sensei-lms-beta/Tests
+ * @package sensei-lms-beta-tester/Tests
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Tests\Framework;
+namespace Sensei_LMS_Beta_Tester\Tests\Framework;
 
-use Sensei_LMS_Beta\Updater\Plugin_Package;
-use Sensei_LMS_Beta\Updater\Abstract_Updater;
-use Sensei_LMS_Beta\Updater\Sources\Source;
+use Sensei_LMS_Beta_Tester\Updater\Plugin_Package;
+use Sensei_LMS_Beta_Tester\Updater\Abstract_Updater;
+use Sensei_LMS_Beta_Tester\Updater\Sources\Source;
 
 /**
  * Class containing implemented version of Abstract_Updater.
  *
- * @class \Sensei_LMS_Beta\Tests\Framework\Updater_Shim
+ * @class \Sensei_LMS_Beta_Tester\Tests\Framework\Updater_Shim
  */
 class Updater_Shim extends Abstract_Updater {
 	/**
@@ -31,7 +31,7 @@ class Updater_Shim extends Abstract_Updater {
 	 * Get all version plugin packages.
 	 *
 	 * @param callable $filter_callback Callback to filter the versions returned.
-	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta_Tester\Updater\Plugin_Package[]
 	 */
 	public function get_versions( $filter_callback = null ) {
 		return parent::get_versions( $filter_callback );

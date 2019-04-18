@@ -1,17 +1,17 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater.
+ * File containing the class \Sensei_LMS_Beta_Tester\Updater.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta;
+namespace Sensei_LMS_Beta_Tester;
 
-use Sensei_LMS_Beta\Updater\Plugin_Package;
-use Sensei_LMS_Beta\Updater\Abstract_Updater;
-use Sensei_LMS_Beta\Updater\Sources\Github;
-use Sensei_LMS_Beta\Updater\Sources\Source;
+use Sensei_LMS_Beta_Tester\Updater\Plugin_Package;
+use Sensei_LMS_Beta_Tester\Updater\Abstract_Updater;
+use Sensei_LMS_Beta_Tester\Updater\Sources\Github;
+use Sensei_LMS_Beta_Tester\Updater\Sources\Source;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing the update logic specific to this plugin.
  *
- * @class \Sensei_LMS_Beta\Updater
+ * @class \Sensei_LMS_Beta_Tester\Updater
  */
 final class Updater extends Abstract_Updater {
 	/**
@@ -73,7 +73,7 @@ final class Updater extends Abstract_Updater {
 	 * @return string
 	 */
 	public function get_message_not_stable_notice() {
-		return __( '<h1><span>&#9888;</span>This is a pre-release version and should only be used on non-production sites<span>&#9888;</span></h1>', 'sensei-lms-beta' );
+		return __( '<h1><span>&#9888;</span>This is a pre-release version and should only be used on non-production sites<span>&#9888;</span></h1>', 'sensei-lms-beta-tester' );
 	}
 
 	/**
@@ -84,7 +84,7 @@ final class Updater extends Abstract_Updater {
 	 */
 	public function get_changelog( $plugin_package ) {
 		return sprintf(
-			'<p><a target="_blank" href="%s">' . esc_html__( 'Read the changelog and find out more about the release on GitHub.', 'sensei-lms-beta' ) . '</a></p>',
+			'<p><a target="_blank" href="%s">' . esc_html__( 'Read the changelog and find out more about the release on GitHub.', 'sensei-lms-beta-tester' ) . '</a></p>',
 			$plugin_package->get_changelog_url()
 		);
 	}
@@ -103,7 +103,7 @@ final class Updater extends Abstract_Updater {
 			'plugin_file' => $this->get_installed_basename(),
 			'slug'        => $this->get_plugin_slug(),
 			'sections'    => [
-				'description' => esc_html__( 'Share your knowledge, grow your network, and strengthen your brand by launching an online course.', 'sensei-lms-beta' ),
+				'description' => esc_html__( 'Share your knowledge, grow your network, and strengthen your brand by launching an online course.', 'sensei-lms-beta-tester' ),
 			],
 		];
 	}

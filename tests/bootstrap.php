@@ -2,7 +2,7 @@
 /**
  * Bootstrap file for unit tests.
  *
- * @package sensei-lms-beta/Tests
+ * @package sensei-lms-beta-tester/Tests
  * @since   1.0.0
  */
 
@@ -22,11 +22,11 @@ require_once $updater_dir . '/sources/interface-source.php';
 require_once $updater_dir . '/sources/class-abstract-source.php';
 require_once $updater_dir . '/sources/class-github.php';
 
-require_once $plugin_dir . '/sensei-lms-beta.php';
+require_once $plugin_dir . '/sensei-lms-beta-tester.php';
 require_once $plugin_dir . '/includes/class-admin.php';
 require_once $plugin_dir . '/includes/class-updater.php';
 
 require_once __DIR__ . '/framework/class-updater-shim.php';
 require_once __DIR__ . '/framework/class-source-shim.php';
 
-\Sensei_LMS_Beta\Sensei_LMS_Beta::instance();
+\Sensei_LMS_Beta_Tester\Sensei_LMS_Beta_Tester::instance();

@@ -1,12 +1,12 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Sensei_LMS_Beta.
+ * File containing the class \Sensei_LMS_Beta_Tester\Sensei_LMS_Beta_Tester.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta;
+namespace Sensei_LMS_Beta_Tester;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Main Sensei LMS Beta tester class.
  *
- * @class Sensei_LMS_Beta
+ * @class Sensei_LMS_Beta_Tester
  */
-final class Sensei_LMS_Beta {
+final class Sensei_LMS_Beta_Tester {
 	const SENSEI_LMS_BETA_REPORT_ISSUE_URL = 'https://github.com/Automattic/sensei/issues/new';
 
 	/**
@@ -82,7 +82,7 @@ final class Sensei_LMS_Beta {
 	 * Loads textdomain for plugin.
 	 */
 	public function load_plugin_textdomain() {
-		$domain = 'sensei-lms-beta';
+		$domain = 'sensei-lms-beta-tester';
 		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		$locale = apply_filters( 'plugin_locale', $locale, $domain );
 

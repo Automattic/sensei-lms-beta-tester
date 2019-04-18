@@ -2,7 +2,7 @@
 /**
  * File containing mocks used throughout all tests.
  *
- * @package sensei-lms-beta/Tests
+ * @package sensei-lms-beta-tester/Tests
  * @since   1.0.0
  */
 

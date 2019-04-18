@@ -1,18 +1,18 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Tests\Unit_Tests\Abstract_Updater.
+ * File containing the class \Sensei_LMS_Beta_Tester\Tests\Unit_Tests\Abstract_Updater.
  *
- * @package sensei-lms-beta/Tests
+ * @package sensei-lms-beta-tester/Tests
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Tests\Unit_Tests;
+namespace Sensei_LMS_Beta_Tester\Tests\Unit_Tests;
 
-use Sensei_LMS_Beta\Tests\Framework\Base_Test;
-use Sensei_LMS_Beta\Tests\Framework\Updater_Shim;
-use Sensei_LMS_Beta\Tests\Framework\Source_Shim;
-use Sensei_LMS_Beta\Updater\Abstract_Updater;
-use Sensei_LMS_Beta\Updater\Plugin_Package;
+use Sensei_LMS_Beta_Tester\Tests\Framework\Base_Test;
+use Sensei_LMS_Beta_Tester\Tests\Framework\Updater_Shim;
+use Sensei_LMS_Beta_Tester\Tests\Framework\Source_Shim;
+use Sensei_LMS_Beta_Tester\Updater\Abstract_Updater;
+use Sensei_LMS_Beta_Tester\Updater\Plugin_Package;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,11 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing base test.
  *
- * @class \Sensei_LMS_Beta\Tests\Unit_Tests\Abstract_Updater
+ * @class \Sensei_LMS_Beta_Tester\Tests\Unit_Tests\Abstract_Updater
  */
 class Test_Abstract_Updater extends Base_Test {
 	/**
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_versions
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_versions
 	 */
 	public function testGetVersionsSimple() {
 		$updater = $this->getSimpleUpdater();
@@ -37,9 +37,9 @@ class Test_Abstract_Updater extends Base_Test {
 	}
 
 	/**
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_latest_channel_release
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_versions
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_beta_channel
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_latest_channel_release
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_versions
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_beta_channel
 	 */
 	public function testGetLatestChannelReleaseBeta() {
 		$updater = $this->getSimpleUpdater();
@@ -51,9 +51,9 @@ class Test_Abstract_Updater extends Base_Test {
 	}
 
 	/**
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_latest_channel_release
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_versions
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_rc_channel
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_latest_channel_release
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_versions
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_rc_channel
 	 */
 	public function testGetLatestChannelReleaseRC() {
 		$updater = $this->getSimpleUpdater();
@@ -65,9 +65,9 @@ class Test_Abstract_Updater extends Base_Test {
 	}
 
 	/**
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_latest_channel_release
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_versions
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_stable_channel
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_latest_channel_release
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_versions
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_stable_channel
 	 */
 	public function testGetLatestChannelReleaseStable() {
 		$updater = $this->getSimpleUpdater();
@@ -79,7 +79,7 @@ class Test_Abstract_Updater extends Base_Test {
 	}
 
 	/**
-	 * @covers \Sensei_LMS_Beta\Updater\Abstract_Updater::get_latest_channel_release
+	 * @covers \Sensei_LMS_Beta_Tester\Updater\Abstract_Updater::get_latest_channel_release
 	 */
 	public function testGetLatestChannelReleaseBad() {
 		$updater = $this->getSimpleUpdater();

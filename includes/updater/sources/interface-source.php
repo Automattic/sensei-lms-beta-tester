@@ -1,14 +1,14 @@
 <?php
 /**
- * File containing the interface \Sensei_LMS_Beta\Updater\Sources\Source.
+ * File containing the interface \Sensei_LMS_Beta_Tester\Updater\Sources\Source.
  *
- * @package sensei-lms-beta
+ * @package sensei-lms-beta-tester
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Updater\Sources;
+namespace Sensei_LMS_Beta_Tester\Updater\Sources;
 
-use Sensei_LMS_Beta\Updater\Plugin_Package;
+use Sensei_LMS_Beta_Tester\Updater\Plugin_Package;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface for a version package source.
  *
- * @interface \Sensei_LMS_Beta\Updater\Sources\Source
+ * @interface \Sensei_LMS_Beta_Tester\Updater\Sources\Source
  */
 interface Source {
 	/**

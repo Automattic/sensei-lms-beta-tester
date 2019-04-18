@@ -30,14 +30,14 @@ var paths = {
 		'languages/*',
 		'README.md',
 		'templates/**/*',
-		'sensei-lms-beta.php',
+		'sensei-lms-beta-tester.php',
 	],
 	phpFiles: [
 		'includes/**/*.php',
-		'sensei-lms-beta.php'
+		'sensei-lms-beta-tester.php'
 	],
-	packageDir: 'build/sensei-lms-beta',
-	packageZip: 'build/sensei-lms-beta.zip'
+	packageDir: 'build/sensei-lms-beta-tester',
+	packageZip: 'build/sensei-lms-beta-tester.zip'
 };
 
 gulp.task( 'clean', gulp.series( function( cb ) {
@@ -53,15 +53,15 @@ gulp.task( 'pot', gulp.series( function() {
 	return gulp.src( paths.phpFiles )
 		.pipe( sort() )
 		.pipe( wpPot( {
-			domain: 'sensei-lms-beta'
+			domain: 'sensei-lms-beta-tester'
 		} ) )
-		.pipe( gulp.dest( 'languages/sensei-lms-beta.pot' ) );
+		.pipe( gulp.dest( 'languages/sensei-lms-beta-tester.pot' ) );
 } ) );
 
 gulp.task( 'textdomain', gulp.series( function() {
 	return gulp.src( [ '**/*.php', '!node_modules/**', '!build/**' ] )
 		.pipe( checktextdomain( {
-			text_domain: 'sensei-lms-beta',
+			text_domain: 'sensei-lms-beta-tester',
 			keywords: [
 				'__:1,2d',
 				'_e:1,2d',
