@@ -107,7 +107,7 @@ $current_version = \Sensei_LMS_Beta\Updater::instance()->get_current_version_pac
 				<label>
 					<select id="sensei-lms-beta-version-select" name="sensei_lms_beta_version_select">
 						<?php
-						foreach ( \Sensei_LMS_Beta\Updater::instance()->get_versions() as $package ) {
+						foreach ( \Sensei_LMS_Beta\Updater::instance()->get_beta_channel() as $package ) {
 							echo sprintf( '<option name="%1$s">%1$s</option>', esc_html( $package->get_version() ) );
 						}
 						?>

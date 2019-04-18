@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class \Sensei_LMS_Beta\Updater_Base.
+ * File containing the class \Sensei_LMS_Beta\Updater\Abstract_Updater.
  *
  * @package sensei-lms-beta
  * @since   1.0.0
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class containing the shared update logic.
  *
- * @class \Sensei_LMS_Beta\Updater_Base
+ * @class \Sensei_LMS_Beta\Updater\Abstract_Updater
  */
 abstract class Abstract_Updater {
 	const CHANNEL_BETA   = 'beta';
@@ -38,6 +38,13 @@ abstract class Abstract_Updater {
 	 * @var string
 	 */
 	private $channel;
+
+	/**
+	 * Cached return variables.
+	 *
+	 * @var array
+	 */
+	private $cache = [];
 
 	/**
 	 * Initialize the singleton instance.
@@ -129,12 +136,7 @@ abstract class Abstract_Updater {
 	 * @param callable $filter_callback Callback to filter the versions returned.
 	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
-	public function get_versions( $filter_callback = null ) {
-		static $source_versions;
-		if ( $source_versions ) {
-			return $source_versions;
-		}
-
+	protected function get_versions( $filter_callback = null ) {
 		$source_versions = $this->get_plugin_package_source()->get_versions();
 
 		if ( $filter_callback ) {
@@ -169,13 +171,13 @@ abstract class Abstract_Updater {
 		}
 
 		switch ( $channel ) {
-			case 'beta':
+			case self::CHANNEL_BETA:
 				$releases = $this->get_beta_channel();
 				break;
-			case 'rc':
+			case self::CHANNEL_RC:
 				$releases = $this->get_rc_channel();
 				break;
-			case 'stable':
+			case self::CHANNEL_STABLE:
 				$releases = $this->get_stable_channel();
 				break;
 			default:
@@ -190,12 +192,33 @@ abstract class Abstract_Updater {
 	}
 
 	/**
+	 * Helper used to cache simple generator results.
+	 *
+	 * @param string   $id        Generator ID.
+	 * @param callable $generator Callable function to generate result.
+	 * @return mixed
+	 */
+	protected function cached_generator_helper( $id, $generator ) {
+		if ( isset( $this->cache[ $id ] ) ) {
+			return $this->cache[ $id ];
+		}
+
+		$this->cache[ $id ] = call_user_func( $generator );
+
+		return $this->cache[ $id ];
+	}
+
+	/**
 	 * Get version plugin packages for betas, RCs, and stable.
 	 *
 	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
-	private function get_beta_channel() {
-		return $this->get_versions();
+	public function get_beta_channel() {
+		$generator = function() {
+			return $this->get_versions();
+		};
+
+		return $this->cached_generator_helper( __FUNCTION__, $generator );
 	}
 
 	/**
@@ -203,17 +226,21 @@ abstract class Abstract_Updater {
 	 *
 	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
-	private function get_rc_channel() {
-		return $this->get_versions(
-			function( $package ) {
+	public function get_rc_channel() {
+		$generator = function() {
+			return $this->get_versions(
+				function( $package ) {
 					/**
 					 * Package variable.
 					 *
 					 * @var Plugin_Package $package
 					 */
 					return $package->is_stable() || $package->is_rc();
-			}
-		);
+				}
+			);
+		};
+
+		return $this->cached_generator_helper( __FUNCTION__, $generator );
 	}
 
 	/**
@@ -221,17 +248,21 @@ abstract class Abstract_Updater {
 	 *
 	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
-	private function get_stable_channel() {
-		return $this->get_versions(
-			function( $package ) {
+	public function get_stable_channel() {
+		$generator = function() {
+			return $this->get_versions(
+				function( $package ) {
 					/**
 					 * Package variable.
 					 *
 					 * @var Plugin_Package $package
 					 */
 					return $package->is_stable();
-			}
-		);
+				}
+			);
+		};
+
+		return $this->cached_generator_helper( __FUNCTION__, $generator );
 	}
 
 	/**
@@ -345,7 +376,7 @@ abstract class Abstract_Updater {
 	 * @throws \Exception When encountering an error.
 	 */
 	public function switch_version( $new_version ) {
-		$versions = $this->get_versions();
+		$versions = $this->get_beta_channel();
 
 		if ( empty( $versions[ $new_version ] ) ) {
 			return false;
@@ -375,7 +406,7 @@ abstract class Abstract_Updater {
 			return false;
 		}
 
-		foreach ( $this->get_versions() as $plugin_package ) {
+		foreach ( $this->get_beta_channel() as $plugin_package ) {
 			if ( $current_version === $plugin_package->get_version() ) {
 				return $plugin_package;
 			}
