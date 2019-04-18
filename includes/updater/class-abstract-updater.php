@@ -77,6 +77,7 @@ abstract class Abstract_Updater {
 			// If we aren't on the stable channel, override the update checks.
 			add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'api_check' ] );
 			add_filter( 'plugins_api', [ $this, 'plugins_api' ], 10, 3 );
+			add_filter( 'upgrader_source_selection', [ $this, 'upgrader_source_selection' ], 10, 4 );
 		}
 	}
 
@@ -393,6 +394,41 @@ abstract class Abstract_Updater {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Rename the downloaded zip to match the currently installed plugin.
+	 *
+	 * @param string      $source        File source location.
+	 * @param string      $remote_source Remote file source location.
+	 * @param WP_Upgrader $upgrader      WordPress Upgrader instance.
+	 * @param array       $hook_extra    Extra arguments passed to hooked filters.
+	 * @return string
+	 */
+	public function upgrader_source_selection( $source, $remote_source, $upgrader, $hook_extra ) {
+		global $wp_filesystem;
+
+		if ( ! isset( $hook_extra['plugin'] ) || $this->get_installed_basename() !== $hook_extra['plugin'] ) {
+			return $source;
+		}
+
+		$installed_dir = dirname( $this->get_installed_basename() );
+
+		if ( strstr( $source, '/' . $installed_dir ) ) {
+			$corrected_source = trailingslashit( dirname( $source ) ) . trailingslashit( $installed_dir );
+
+			if ( $corrected_source === $source ) {
+				return $source;
+			}
+
+			if ( $wp_filesystem->move( $source, $corrected_source, true ) ) {
+				return $corrected_source;
+			} else {
+				return new \WP_Error( false );
+			}
+		}
+
+		return $source;
 	}
 
 	/**
