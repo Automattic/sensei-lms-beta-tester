@@ -22,55 +22,18 @@ before_script:
     else
       echo "xdebug.ini does not exist"
     fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash tests/bin/prepare-env.sh
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
+  - composer install
 jobs:
   include:
-    # There are no JS blocks to test yet. Uncomment below when we start adding
-    # blocks.
-    #- stage: test
-    #  script:
-    #    - npm install || exit 1
-    #    - npm run test-js || exit 1
-    - stage: test
-      php: 5.6
-      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      php: 7.0
-      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      php: 7.1
-      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      php: 7.2
-      env: WP_VERSION=latest WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      php: 7.2
-      env: WP_VERSION=previous WOOCOMMERCE_VERSION=latest SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      php: 7.2
-      env: WP_VERSION=latest WOOCOMMERCE_VERSION=previous SENSEI_VERSION=master
-      script:
-        - ./tests/bin/travis-phpunit.sh
-    - stage: test
-      script:
-        - npm install
-        - npx eslint --config .eslintrc.js ./assets
     - stage: test
       php: 7.2
       script:
-        - composer install
+        - ./vendor/bin/phpunit
+    - stage: test
+      php: 7.3
+      script:
+        - ./vendor/bin/phpunit
+    - stage: test
+      php: 7.2
+      script:
         - ./tests/bin/travis-phpcs.sh
