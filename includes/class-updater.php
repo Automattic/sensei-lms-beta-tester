@@ -8,7 +8,7 @@
 
 namespace Sensei_LMS_Beta;
 
-use Sensei_LMS_Beta\Admin\Plugin_Package;
+use Sensei_LMS_Beta\Updater\Plugin_Package;
 use Sensei_LMS_Beta\Updater\Abstract_Updater;
 use Sensei_LMS_Beta\Updater\Sources\Github;
 use Sensei_LMS_Beta\Updater\Sources\Source;

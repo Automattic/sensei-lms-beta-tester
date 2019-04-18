@@ -6,7 +6,7 @@
  * @since   1.0.0
  */
 
-namespace Sensei_LMS_Beta\Admin;
+namespace Sensei_LMS_Beta\Updater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

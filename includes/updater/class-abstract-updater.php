@@ -8,7 +8,7 @@
 
 namespace Sensei_LMS_Beta\Updater;
 
-use Sensei_LMS_Beta\Admin\Plugin_Package;
+use Sensei_LMS_Beta\Updater\Plugin_Package;
 use Sensei_LMS_Beta\Updater\Sources\Source;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -127,7 +127,7 @@ abstract class Abstract_Updater {
 	 * Get all version plugin packages.
 	 *
 	 * @param callable $filter_callback Callback to filter the versions returned.
-	 * @return \Sensei_LMS_Beta\Admin\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
 	public function get_versions( $filter_callback = null ) {
 		static $source_versions;
@@ -192,7 +192,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for betas, RCs, and stable.
 	 *
-	 * @return \Sensei_LMS_Beta\Admin\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
 	private function get_beta_channel() {
 		return $this->get_versions();
@@ -201,7 +201,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for RCs and stable.
 	 *
-	 * @return \Sensei_LMS_Beta\Admin\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
 	private function get_rc_channel() {
 		return $this->get_versions(
@@ -219,7 +219,7 @@ abstract class Abstract_Updater {
 	/**
 	 * Get version plugin packages for stable only.
 	 *
-	 * @return \Sensei_LMS_Beta\Admin\Plugin_Package[]
+	 * @return \Sensei_LMS_Beta\Updater\Plugin_Package[]
 	 */
 	private function get_stable_channel() {
 		return $this->get_versions(
