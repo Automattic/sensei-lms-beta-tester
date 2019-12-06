@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Automattic/sensei-lms-beta-tester#readme",
   "devDependencies": {
-    "@babel/core": "7.7.4",
+    "@babel/core": "7.7.5",
     "@wordpress/babel-preset-default": "3.0.2",
     "@wordpress/jest-preset-default": "3.0.3",
     "babel-core": "6.26.3",
