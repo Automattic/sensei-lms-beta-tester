@@ -101,12 +101,13 @@ final class Admin {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'switch-sensei-lms-version' ) ) { // WPCS: Input var ok, sanitization ok.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Keep the nonce.
+		if ( ! wp_verify_nonce( wp_unslash( $_POST['_wpnonce'] ), 'switch-sensei-lms-version' ) ) {
 			wp_die( esc_html__( 'Action failed. Please go back and retry.', 'sensei-lms-beta-tester' ) );
 			return;
 		}
 
-		$new_version = isset( $_POST['sensei_lms_beta_version_select'] ) ? sanitize_text_field( wp_unslash( $_POST['sensei_lms_beta_version_select'] ) ) : false; // WPCS: Input var ok, sanitization ok.
+		$new_version = isset( $_POST['sensei_lms_beta_version_select'] ) ? sanitize_text_field( wp_unslash( $_POST['sensei_lms_beta_version_select'] ) ) : false;
 
 		if ( empty( $new_version ) ) {
 			return;
